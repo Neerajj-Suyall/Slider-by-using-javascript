@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <style>
+      .image{
+         transition: all 100ms ease-in-out 500ms;          
+           display: flex;
+            flex-direction: row;
+             justify-content: center;
+              align-items: center;
+               height:80vh;
+                width:100vw;
+                 background: aquamarine;
+                  position: absolute;
+                   top: 0;
+                    left:0;
+                     right:0;
+      }
+      .exist{
+         transition-duration: 500ms;
+         transition-delay: 0ms;
+         z-index: 20;
+      }
+      .left{
+         transform: translateX(-100vw);
+      }
+      .right{
+         transform: translateX(100vw);
+      }
+      .center{
+         transform: translateX(0vw);
+      }
+
+      .blur{
+         opacity: 0.4;
+      }
+   </style>
+
+   <title>Slider</title>
+</head>
+<body>
+   <div>
+       <div  class="h-[100vh] w-[100vw]" id="mainDiv">
+            <div  style="position: relative;">
+               <span class=" image exist">
+                     <img src="image1.png" alt="image1" style=" height:80vh;"/>
+               </span>
+               <span class="image left">
+                     <img src="image2.png" alt="image2" style=" height:80vh;"/>
+               </span>
+               <span class="image left">
+                     <img src="image3.jpg" alt="image3" style=" height:80vh;"/>
+               </span>
+               <span class="image left">
+                     <img src="image4.jpg" alt="image4" style=" height:80vh;"/>
+               </span>
+            </div>
+            <div style="position: relative; height:80vh; width:100vw; z-index: 99;">
+               <button id="left" class=" bg-blue-100 hover:bg-blue-400 blur" style="border: 2px solid cyan; position: absolute; top: 50%; left: 0%; transform: rotate(90deg); border-radius: 50%;">
+                  <img src="caret.png" alt="left"  /> 
+              </button>
+              <button id="right" class=" bg-blue-100 hover:bg-blue-400"  style="border: 2px solid cyan;position: absolute; top: 50%; right: 0%; transform: rotate(270deg); border-radius: 50%;">
+                  <img src="caret.png" alt="right" /> 
+              </button>
+            </div>
+       </div>
+   </div>
+
+
+   <script>
+      let leftBtn = document.getElementById("left");
+      let rightBtn = document.getElementById("right");
+      let image = document.getElementsByClassName("image");
+      let i = 0;
+      let pre ;
+      function slider(event){
+
+         let target = event.target.parentElement.id;
+         let exist = document.getElementsByClassName("exist").item(0);
+         let nextExist;
+         let abc = {};
+         let first;
+         let last;
+         let over;
+         let btn;
+         // let ok;
+    
+         if(target == "left"){            
+            if(exist.previousElementSibling === null){
+               return;
+            }
+            nextExist = exist.previousElementSibling;
+            abc.add = "left";
+            abc.remove = "right";
+            if(nextExist.previousElementSibling  === null){
+               leftBtn.classList.add("blur");
+            }else {
+               // rightBtn.style.display = "block";
+               rightBtn.classList.remove("blur");
+            }
+            
+         }else if(target === "right"){
+            if(exist.nextElementSibling === null){
+               return;
+            }
+            nextExist = exist.nextElementSibling;
+               abc.add = "right";
+            abc.remove = "left";
+            
+            if(nextExist.nextElementSibling  === null){
+               rightBtn.classList.add("blur");
+            }else {
+               leftBtn.classList.remove("blur");
+            }
+         }
+        
+         exist.classList.remove("exist");
+         exist.classList.add(abc.add);
+         nextExist.classList.remove(abc.remove);
+         nextExist.classList.add("exist");
+    }
+   
+(() => {
+   setInterval(() => {
+      let exist = document.getElementsByClassName("exist").item(0);
+      if (exist.nextElementSibling == null) {
+         btn = leftBtn.children[0];
+      }else if(exist.previousElementSibling == null){
+         btn = rightBtn.children[0];
+      }
+      btn.click();
+      // if(exist.nextElementSibling){
+      //    rightBtn.children[0].click();
+      // }else {         
+      //    leftBtn.children[0].click();
+      // }
+
+   }, 2000);
+})();
+
+
+//   function anc(event) {
+//    // return;
+//    setInterval(() => {
+//        image[i].classList.remove("left")
+//        image[i].classList.remove("right")
+//        image[i].classList.add("exist")
+//        if (pre != undefined) {
+//          pre.classList.add("left")
+//          pre.classList.remove("exist")
+//        }
+//        pre = image[i]
+//       //  console.log("running");
+//        i++;
+//        if (i == image.length) {
+//          // alert(i)
+//           i=0;
+//        }
+//     }, 2000);
+ 
+//   }
+
+//  anc();
+      leftBtn.addEventListener("click", slider);
+      rightBtn.addEventListener("click", slider);
+
+
+   </script>
+
+
+   
+</body>
+</html>
